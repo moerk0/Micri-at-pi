@@ -12,6 +12,9 @@ enum Leds{
 struct Lights{
     int led_pin;
     bool state;
+    int dim_val;
+    unsigned long lastOnTime;
+    int delayT;
 };
 
 #endif
