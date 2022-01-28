@@ -11,7 +11,7 @@
 struct Lights lights[node_cnt];
 
 unsigned long lastOnTime = 0;
-int delayT = 300;
+
 
 
 void dumpBits(){
@@ -22,6 +22,17 @@ void dumpBits(){
   }
   
   Serial.println(msg);
+}
+
+void blink(unsigned int t, struct Lights *p){
+  
+  if (millis()- lastOnTime > t )
+  {
+  p->state =! p->state;
+  lastOnTime = millis();
+  }
+  digitalWrite(p->pin, p->state);
+  
 }
 
 void setup(){
@@ -38,23 +49,47 @@ void setup(){
    
 }
 
-void loop(){
+void debugMSG(){
 
-  
-  for (int i = 0; i < node_cnt; i++)
-  {
-    lights[i].state =! lights[i].state;
-    digitalWrite(lights[i].led_pin, lights[i].state);
-    delay(300);
-    lights[i].state =! lights[i].state;
-    digitalWrite(lights[i].led_pin, lights[i].state);
-    
-    
 
-    dumpBits();
-  }
-    
-  
-  
-  
 }
+
+void blinkLed(struct Lights *p, unsigned int interval){
+
+  if (millis()- p->lastOnTime > interval )
+  {
+    p->state = !p->state;
+    digitalWrite(p->pin, p->state);
+    p->lastOnTime = millis();
+  }
+}
+
+void loop(){
+    blinkLed(&lights[0],1000);
+    
+    blinkLed(&lights[0], 1000);
+
+    blinkLed(&lights[1],500);
+    
+    blinkLed(&lights[1], 500);
+    
+    blinkLed(&lights[2],250);
+    
+    blinkLed(&lights[2], 250);
+    
+    blinkLed(&lights[3],125);
+    
+    blinkLed(&lights[3], 125);
+  }
+  
+
+
+  
+
+    
+    
+
+    
+  
+  
+  
