@@ -20,15 +20,15 @@ bool ioblink(struct Lights *p, unsigned int interval){
   bool done;
   if (millis()- p->lastOnTime > interval )
   {
-   // p->state = !p->state;
-    digitalWrite(p->pin, !p->state);
+    p->state = !p->state;
+    digitalWrite(p->pin, p->state);
     done = false;
   }
 
   if (millis()- p->lastOnTime > interval * 2)
   {
-   // p->state = !p->state;
-    digitalWrite(p->pin, !p->state);
+   p->state = !p->state;
+    digitalWrite(p->pin, p->state);
     p->lastOnTime = millis();
     done = true;
   }
@@ -69,6 +69,7 @@ void chase(){
 
 void loop(){
     // chase();
+    ioblink(&lights[0], 1000);
   }
   
 
