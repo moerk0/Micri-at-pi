@@ -63,7 +63,7 @@ void chase(){
 
 
 void loop(){
-    
+    chase();
   }
   
 
