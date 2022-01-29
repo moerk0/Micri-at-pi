@@ -8,79 +8,72 @@
 #include "RGBLed.h"
 
 
+#define FACTOR 10
+
 struct Lights lights[node_cnt];
 
-unsigned long lastOnTime = 0;
-
-
-
-void dumpBits(){
-  String msg;
-  for (int i = 0; i < node_cnt; i++)
+//TODO: Configure On and off Time
+bool pause(unsigned int interval){
+  static unsigned long previousMillis;
+  if (millis() - previousMillis >= interval)
   {
-  msg+= lights[i].state;   
+    previousMillis = millis();
+    return true;
   }
+  return false;
   
-  Serial.println(msg);
 }
 
-void blink(unsigned int t, struct Lights *p){
-  
-  if (millis()- lastOnTime > t )
-  {
-  p->state =! p->state;
-  lastOnTime = millis();
-  }
+
+void ioLed(struct Lights *p){
+  p->state = !p->state;
   digitalWrite(p->pin, p->state);
-  
+}
+//TODO: Make Default on and Default off a param
+void chase(byte mode){
+  static unsigned int idx;
+if (pause(lights[idx].delayT))
+{
+    ioLed(&lights[idx]);
+    if (!lights[idx].state){
+      switch (mode)
+      {
+      case anticlockwise:
+        idx--;
+        break;
+      
+      case clockwise:
+      idx ++; 
+        break;
+      }
+
+    idx %= node_cnt;    
+    }
+}
+
+
 }
 
 void setup(){
   Serial.begin(9600);
   
   int tmp[] = {LED_0, LED_1, LED_2,LED_3};
+  int tmp_delayT[] = {25,50,75,100};
   for (int i = 0; i < node_cnt; i++)
   {
   makeLeds(&lights[i], tmp[i]);
-  lights[i].delayT = 300;
+  tmp_delayT[i]*= FACTOR;
+  lights[i].delayT = tmp_delayT[i]; //individual Delay Time
   }
-  
-
    
 }
 
-void debugMSG(){
 
 
-}
-
-void blinkLed(struct Lights *p, unsigned int interval){
-
-  if (millis()- p->lastOnTime > interval )
-  {
-    p->state = !p->state;
-    digitalWrite(p->pin, p->state);
-    p->lastOnTime = millis();
-  }
-}
 
 void loop(){
-    blinkLed(&lights[0],1000);
-    
-    blinkLed(&lights[0], 1000);
-
-    blinkLed(&lights[1],500);
-    
-    blinkLed(&lights[1], 500);
-    
-    blinkLed(&lights[2],250);
-    
-    blinkLed(&lights[2], 250);
-    
-    blinkLed(&lights[3],125);
-    
-    blinkLed(&lights[3], 125);
-  }
+  chase(clockwise);
+}
   
 
 

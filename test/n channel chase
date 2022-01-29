@@ -1,0 +1,49 @@
+const unsigned CheekIntervals[CHEEK_COUNT] = {  // Milliseconds
+  300, 300, 300, 300, 300, 300,
+  300, 300, 300, 300, 300, 300
+};
+unsigned long CheekTime = millis();
+int CheekStep = 0;
+
+const int ChinLEDPins[] = {
+  10, 11, 12, 13
+};
+const int CHIN_COUNT = sizeof ChinLEDPins / sizeof ChinLEDPins[0];
+const unsigned ChinIntervals[] = {  // Milliseconds
+  300, 300, 300, 300
+};
+unsigned long ChinTime = millis();
+int ChinStep = 0;
+
+void setup() {
+  int i;
+  /* Cheek LED's */
+  for (i = 0; i < CHEEK_COUNT; i++)
+    pinMode(CheekLEDPins[i], OUTPUT);  // Yes, it's OK to set the pinMode twice on some pins
+
+  /* Chin LED's */
+  for (i = 0; i < CHIN_COUNT; i++)
+    pinMode(ChinLEDPins[i], OUTPUT);
+}
+
+void loop() {
+  unsigned long currentMillis = millis();
+  
+  // Do the cheek animation
+  if ((currentMillis - CheekTime) >= CheekIntervals[CheekStep])
+  {
+    CheekTime += CheekIntervals[CheekStep];
+    digitalWrite(CheekLEDPins[CheekStep], LOW); // Previous pin OFF
+    CheekStep = (CheekStep + 1) % CHEEK_COUNT;
+    digitalWrite(CheekLEDPins[CheekStep], HIGH);  // New pin ON
+  }
+
+  // Do the chin animation
+  if ((currentMillis - ChinTime) >= ChinIntervals[ChinStep])
+  {
+    ChinTime += ChinIntervals[ChinStep];
+    digitalWrite(ChinLEDPins[ChinStep], LOW); // Previous pin OFF
+    ChinStep = (ChinStep + 1) % CHIN_COUNT;
+    digitalWrite(ChinLEDPins[ChinStep], HIGH);  // New pin ON
+  }
+}
