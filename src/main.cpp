@@ -8,70 +8,72 @@
 #include "RGBLed.h"
 
 
+#define FACTOR 10
+
 struct Lights lights[node_cnt];
 
-unsigned long lastOnTime = 0;
-
-
-
-
-
-bool ioblink(struct Lights *p, unsigned int interval){
-  bool done = false;
-  p->lastOnTime = millis() - interval;
-  while(!done){
-    if (millis()- p->lastOnTime > interval )
-    {
-      p->state = !p->state;
-      digitalWrite(p->pin, p->state);
-      
-    }
-
-    if (millis()- p->lastOnTime > interval * 2)
-    {
-    p->state = !p->state;
-      digitalWrite(p->pin, p->state);
-      p->lastOnTime = millis();
-      done = true;
-    }
+//TODO: Configure On and off Time
+bool pause(unsigned int interval){
+  static unsigned long previousMillis;
+  if (millis() - previousMillis >= interval)
+  {
+    previousMillis = millis();
+    return true;
   }
+  return false;
+  
+}
 
-  return done;
+
+void ioLed(struct Lights *p){
+  p->state = !p->state;
+  digitalWrite(p->pin, p->state);
+}
+//TODO: Make Default on and Default off a param
+void chase(byte mode){
+  static unsigned int idx;
+if (pause(lights[idx].delayT))
+{
+    ioLed(&lights[idx]);
+    if (!lights[idx].state){
+      switch (mode)
+      {
+      case anticlockwise:
+        idx--;
+        break;
+      
+      case clockwise:
+      idx ++; 
+        break;
+      }
+
+    idx %= node_cnt;    
+    }
+}
+
+
 }
 
 void setup(){
   Serial.begin(9600);
   
   int tmp[] = {LED_0, LED_1, LED_2,LED_3};
+  int tmp_delayT[] = {25,50,75,100};
   for (int i = 0; i < node_cnt; i++)
   {
   makeLeds(&lights[i], tmp[i]);
-  lights[i].delayT = 300;
+  tmp_delayT[i]*= FACTOR;
+  lights[i].delayT = tmp_delayT[i]; //individual Delay Time
   }
-  
-  ioblink(&lights[0], 1000);
-
    
 }
 
 
 
-void chase(){
-  static int idx;
-  if (idx == node_cnt){
-      idx = 0;
-    }
-  else{
-    idx ++;
-    ioblink(&lights[idx], 1000);
-  };
-}
-
 
 void loop(){
-    // chase();
-    ioblink(&lights[0], 1000);
-  }
+  chase(clockwise);
+}
   
 
 

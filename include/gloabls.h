@@ -9,6 +9,11 @@ enum Leds{
     node_cnt,
 };
 
+enum ChaseMode{
+    anticlockwise,
+    clockwise,
+};
+
 struct Lights{
     int pin;
     bool state;
