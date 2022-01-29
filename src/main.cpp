@@ -16,6 +16,25 @@ unsigned long lastOnTime = 0;
 
 
 
+bool ioblink(struct Lights *p, unsigned int interval){
+  bool done;
+  if (millis()- p->lastOnTime > interval )
+  {
+   // p->state = !p->state;
+    digitalWrite(p->pin, !p->state);
+    done = false;
+  }
+
+  if (millis()- p->lastOnTime > interval * 2)
+  {
+   // p->state = !p->state;
+    digitalWrite(p->pin, !p->state);
+    p->lastOnTime = millis();
+    done = true;
+  }
+
+  return done;
+}
 
 void setup(){
   Serial.begin(9600);
@@ -27,43 +46,29 @@ void setup(){
   lights[i].delayT = 300;
   }
   
+  ioblink(&lights[0], 1000);
 
    
 }
 
 
-bool ioblink(struct Lights *p, unsigned int interval){
-  bool done;
-  if (millis()- p->lastOnTime > interval )
-  {
-   // p->state = !p->state;
-    digitalWrite(p->pin, !p->state);
-  }
-
-  if (millis()- p->lastOnTime > interval * 2)
-  {
-   // p->state = !p->state;
-    digitalWrite(p->pin, !p->state);
-    p->lastOnTime = millis();
-    return done = true;
-  }
-}
 
 void chase(){
   static int idx =0;
   if(ioblink(&lights[idx], 1000)){
-    idx ++;
-    if (idx == node_cnt)
+    
+    if (idx < node_cnt)
     {
       idx = 0;
     }
-    
+    else{idx ++;};
   }
+  else{};
 }
 
 
 void loop(){
-    
+    // chase();
   }
   
 
