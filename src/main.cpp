@@ -13,11 +13,11 @@
 struct Lights lights[node_cnt];
 
 //TODO: Configure On and off Time
-bool pause(unsigned int interval){
-  static unsigned long previousMillis;
-  if (millis() - previousMillis >= interval)
+bool pause(struct Lights *p, unsigned int interval){
+  //static unsigned long previousMillis;
+  if (millis() - p->lastOnTime >= p->delayT)
   {
-    previousMillis = millis();
+    p->lastOnTime = millis();
     return true;
   }
   return false;
@@ -32,7 +32,7 @@ void ioLed(struct Lights *p){
 //TODO: Make Default on and Default off a param
 void chase(byte mode){
   static unsigned int idx;
-if (pause(lights[idx].delayT))
+if (pause(&lights[idx], 0))
 {
     ioLed(&lights[idx]);
     if (!lights[idx].state){
