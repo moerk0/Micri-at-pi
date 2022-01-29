@@ -17,20 +17,23 @@ unsigned long lastOnTime = 0;
 
 
 bool ioblink(struct Lights *p, unsigned int interval){
-  bool done;
-  if (millis()- p->lastOnTime > interval )
-  {
-    p->state = !p->state;
-    digitalWrite(p->pin, p->state);
-    done = false;
-  }
+  bool done = false;
+  p->lastOnTime = millis() - interval;
+  while(!done){
+    if (millis()- p->lastOnTime > interval )
+    {
+      p->state = !p->state;
+      digitalWrite(p->pin, p->state);
+      
+    }
 
-  if (millis()- p->lastOnTime > interval * 2)
-  {
-   p->state = !p->state;
-    digitalWrite(p->pin, p->state);
-    p->lastOnTime = millis();
-    done = true;
+    if (millis()- p->lastOnTime > interval * 2)
+    {
+    p->state = !p->state;
+      digitalWrite(p->pin, p->state);
+      p->lastOnTime = millis();
+      done = true;
+    }
   }
 
   return done;
@@ -54,16 +57,14 @@ void setup(){
 
 
 void chase(){
-  static int idx =0;
-  if(ioblink(&lights[idx], 1000)){
-    
-    if (idx < node_cnt)
-    {
+  static int idx;
+  if (idx == node_cnt){
       idx = 0;
     }
-    else{idx ++;};
-  }
-  else{};
+  else{
+    idx ++;
+    ioblink(&lights[idx], 1000);
+  };
 }
 
 
