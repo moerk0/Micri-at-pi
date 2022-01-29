@@ -19,7 +19,7 @@ struct Lights{
     bool state;
     int dim_val;
     unsigned long lastOnTime;
-    int delayT;
+    unsigned int delayT;
 };
 
 #endif
