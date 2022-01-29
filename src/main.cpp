@@ -14,26 +14,8 @@ unsigned long lastOnTime = 0;
 
 
 
-void dumpBits(){
-  String msg;
-  for (int i = 0; i < node_cnt; i++)
-  {
-  msg+= lights[i].state;   
-  }
-  
-  Serial.println(msg);
-}
 
-void blink(unsigned int t, struct Lights *p){
-  
-  if (millis()- lastOnTime > t )
-  {
-  p->state =! p->state;
-  lastOnTime = millis();
-  }
-  digitalWrite(p->pin, p->state);
-  
-}
+
 
 void setup(){
   Serial.begin(9600);
@@ -49,37 +31,39 @@ void setup(){
    
 }
 
-void debugMSG(){
 
-
-}
-
-void blinkLed(struct Lights *p, unsigned int interval){
-
+bool ioblink(struct Lights *p, unsigned int interval){
+  bool done;
   if (millis()- p->lastOnTime > interval )
   {
-    p->state = !p->state;
-    digitalWrite(p->pin, p->state);
+   // p->state = !p->state;
+    digitalWrite(p->pin, !p->state);
+  }
+
+  if (millis()- p->lastOnTime > interval * 2)
+  {
+   // p->state = !p->state;
+    digitalWrite(p->pin, !p->state);
     p->lastOnTime = millis();
+    return done = true;
   }
 }
 
-void loop(){
-    blinkLed(&lights[0],1000);
+void chase(){
+  static int idx =0;
+  if(ioblink(&lights[idx], 1000)){
+    idx ++;
+    if (idx == node_cnt)
+    {
+      idx = 0;
+    }
     
-    blinkLed(&lights[0], 1000);
+  }
+}
 
-    blinkLed(&lights[1],500);
+
+void loop(){
     
-    blinkLed(&lights[1], 500);
-    
-    blinkLed(&lights[2],250);
-    
-    blinkLed(&lights[2], 250);
-    
-    blinkLed(&lights[3],125);
-    
-    blinkLed(&lights[3], 125);
   }
   
 

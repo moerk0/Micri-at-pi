@@ -19,3 +19,12 @@ void serialBehaviour(){
   }
 }
 
+// void dumpBits(){
+//   String msg;
+//   for (int i = 0; i < node_cnt; i++)
+//   {
+//   msg+= lights[i].state;   
+//   }
+  
+//   Serial.println(msg);
+// }
