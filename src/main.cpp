@@ -45,7 +45,8 @@ bool ioblink(struct Lights *p, unsigned int interval){
    // p->state = !p->state;
     digitalWrite(p->pin, !p->state);
     p->lastOnTime = millis();
-    return done = true;
+    done = true;
+    return done;
   }
 }
 
