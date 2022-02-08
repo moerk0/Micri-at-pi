@@ -66,7 +66,7 @@ void setup(){
 void loop(){
   chase(clockwise);
   getSerialData(&msg);
-  dumpString(&msg);
+ processSerialData(&msg);
   
 }
   

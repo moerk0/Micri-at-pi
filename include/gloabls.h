@@ -21,10 +21,11 @@ struct Lights{
     unsigned long lastOnTime;
     unsigned int delayT;
 };
-
+//TODO: converted is an Array!!!!!!
 struct Msg{
     String raw;
-    int converted;
+    //int length;
+    unsigned int converted;
     bool gate;
 };
 #endif

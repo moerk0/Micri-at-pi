@@ -17,21 +17,38 @@ void getSerialData(struct Msg *p){
   }
 }
 
-        // int lenght = msg.length();
-        // Serial.print(lenght);
-        // Serial.println(msg);
- String collectBits(struct Lights *p){
-  String msg;
-  while(msg.length() <= node_cnt){
-  msg+= p->state;
-  delay(3);
- }
-  return msg;
+void processSerialData(struct Msg *p){
+  int length = p->raw.length();
+  if (p->gate)
+  {
+    for (int i = 0; i < length; i++)
+    {
+     // char msgsplit = p->raw[i];
+      if (isDigit(p->raw[i]))
+      {
+        p->converted = p->raw.toInt();
+      }
+      else{Serial.println("Please enter a integer Number!");}
+      
+      //Serial.print(i);
+    }
+    Serial.println(p->converted); 
+    p->gate = !p->gate;
+  }
+  
+  
+  
+  // if (isDigit())
+  // {
+  //   /* code */
+  // }
+  
 }
  
 void dumpString(struct Msg *p){
   if(p->gate){
      Serial.println(p->raw);
+
      p->gate = ! p->gate;
   }
  }
