@@ -3,28 +3,30 @@
 #include "gloabls.h"
 
 void serialBehaviour(){
-
-  String msg;
-  if (Serial.available() > 0){
-    while (Serial.available() > 0)
-    {
-      msg += char(Serial.read());
-      delay(3);
+  String msg = "";
+  while (Serial.available() > 0){
+    char inChar = Serial.read();  
+    if (inChar == '\r'){
+        int lenght = msg.length();
+        Serial.print(lenght);
+        Serial.println(msg);
     }
-
-  int lenght = msg.length();
-
-    Serial.println(msg);
-    Serial.println("Der String ist " + String(lenght) + "Lang");
+    else{
+    msg+= (char)inChar;
+    //delay(3);
+    }
   }
 }
+ String collectBits(struct Lights *p){
+  String msg;
+  while(msg.length() <= node_cnt){
+  msg+= p->state;
+  delay(3);
+ }
+  return msg;
+}
 
-// void dumpBits(){
-//   String msg;
-//   for (int i = 0; i < node_cnt; i++)
-//   {
-//   msg+= lights[i].state;   
-//   }
-  
-//   Serial.println(msg);
-// }
+bool dumpBits(String in_msg){
+  int cnt;
+    
+}

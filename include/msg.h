@@ -2,5 +2,5 @@
 #define MSG_H
 
 void serialBehaviour();
-
+void dumpBits(struct Lights *p);
 #endif
