@@ -22,4 +22,9 @@ struct Lights{
     unsigned int delayT;
 };
 
+struct Msg{
+    String raw;
+    int converted;
+    bool gate;
+};
 #endif

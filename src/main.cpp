@@ -11,6 +11,7 @@
 #define FACTOR 10
 
 struct Lights lights[node_cnt];
+struct Msg msg;
 
 //TODO: Configure On and off Time
 
@@ -64,9 +65,8 @@ void setup(){
 
 void loop(){
   chase(clockwise);
-  if (pause_msg(1000)){
-  serialBehaviour();
-  }
+  getSerialData(&msg);
+  dumpString(&msg);
   
 }
   

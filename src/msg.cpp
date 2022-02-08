@@ -1,22 +1,25 @@
 #include <Arduino.h>
-
 #include "gloabls.h"
 
-void serialBehaviour(){
-  String msg = "";
+void getSerialData(struct Msg *p){
+  String msg;
   while (Serial.available() > 0){
     char inChar = Serial.read();  
     if (inChar == '\r'){
-        int lenght = msg.length();
-        Serial.print(lenght);
-        Serial.println(msg);
+      p->raw = msg;
+      p->gate = !p->gate;
+      break;
     }
     else{
-    msg+= (char)inChar;
+    msg += (char)inChar;
     //delay(3);
     }
   }
 }
+
+        // int lenght = msg.length();
+        // Serial.print(lenght);
+        // Serial.println(msg);
  String collectBits(struct Lights *p){
   String msg;
   while(msg.length() <= node_cnt){
@@ -25,8 +28,10 @@ void serialBehaviour(){
  }
   return msg;
 }
-
-bool dumpBits(String in_msg){
-  int cnt;
-    
-}
+ 
+void dumpString(struct Msg *p){
+  if(p->gate){
+     Serial.println(p->raw);
+     p->gate = ! p->gate;
+  }
+ }
