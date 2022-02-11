@@ -14,6 +14,12 @@ enum ChaseMode{
     clockwise,
 };
 
+enum SerialMonitorOptions{
+    help,
+    convert,
+    error,
+};
+
 struct Lights{
     int pin;
     bool state;
@@ -25,7 +31,7 @@ struct Lights{
 struct Msg{
     String raw;
     //int length;
-    unsigned int converted;
+    unsigned int converted[node_cnt];
     bool gate;
 };
 #endif

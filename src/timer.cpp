@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "gloabls.h"
 
-bool pause_led(struct Lights *p, unsigned int interval){
+bool pause_led(struct Lights *p){
   //static unsigned long previousMillis;
   if (millis() - p->lastOnTime >= p->delayT)
   {
