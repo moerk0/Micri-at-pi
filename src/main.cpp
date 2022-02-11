@@ -13,22 +13,7 @@
 struct Lights lights[node_cnt];
 struct Msg msg;
 
-//TODO: Configure On and off Time
-void processMonitorOptions(byte state){
-  switch (state)
-  {
-  case help:
-    // showOptions(&msg)
-    break;
-  case convert:
-    convertSerialData(&msg);
-    break;
-  case error:
-    // Nonono
-  default:
-    break;
-  }
-}
+//TODO: Configure On AND off Time
 
 
 
@@ -77,14 +62,10 @@ void setup(){
 
 
 void loop(){
-  chase(clockwise);
-  
-  if (Serial.available() > 0)
-  {
-  getSerialData(&msg);
+  parseData(&msg);
   //processMonitorOptions(parseData(&msg));  
-  }
-  else{}//Continue Loop
+  
+  chase(clockwise);
  
   
 }
