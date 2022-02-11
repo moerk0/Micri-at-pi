@@ -17,22 +17,33 @@ void getSerialData(struct Msg *p){
   }
 }
 
-void processSerialData(struct Msg *p){
+void parseData(struct Msg *p){
+  
+  
+}
+
+void convertSerialData(struct Msg *p){
   int length = p->raw.length();
-  if (p->gate)
+  int idx = 0;
+  if (p->gate) // soon wont be relevant
   {
     for (int i = 0; i < length; i++)
     {
      // char msgsplit = p->raw[i];
       if (isDigit(p->raw[i]))
       {
-        p->converted = p->raw.toInt();
+        p->converted[idx] = p->raw.toInt();
       }
-      else{Serial.println("Please enter a integer Number!");}
+      if (p->raw[i] == ' ')//oder komma?
+      {
+        p->converted[idx++];
+      }
+      
+      else{Serial.println("Please enter a integer Number and use Space as delimiter!");}
       
       //Serial.print(i);
     }
-    Serial.println(p->converted); 
+    Serial.println(p->converted[idx]); 
     p->gate = !p->gate;
   }
   
