@@ -13,18 +13,10 @@ void parseData(struct Msg *p){
       {
       Serial.println(p->converted[i]);
       }
+      break;
     }
   }
 }
 
 
 
-
- 
-void dumpString(struct Msg *p){
-  if(p->gate){
-     Serial.println(p->raw);
-
-     p->gate = ! p->gate;
-  }
- }

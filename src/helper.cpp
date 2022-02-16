@@ -12,7 +12,7 @@ bool pause_led(struct Lights *p){
   
 }
 
-
+//unused
 bool pause_msg(unsigned int interval){
     static unsigned long lastOnTime;
     if (millis() - lastOnTime >= interval)
@@ -23,3 +23,4 @@ bool pause_msg(unsigned int interval){
   return false;
   
 }
+

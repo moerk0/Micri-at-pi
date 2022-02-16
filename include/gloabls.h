@@ -1,5 +1,6 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
+#include "config.h"
 
 enum Leds{
     node1,
@@ -27,11 +28,11 @@ struct Lights{
     unsigned long lastOnTime;
     unsigned int delayT;
 };
-//TODO: converted is an Array!!!!!!
+
 struct Msg{
-    String raw;
-    //int length;
-    unsigned int converted[node_cnt];
+    // char binStr[node_cnt]; //Wär schön is aber nicht
+    String binStr;//Is it in Heap or stack?
+    unsigned int converted[SEQ_LEN];
     bool gate;
 };
 #endif

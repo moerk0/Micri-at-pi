@@ -1,0 +1,12 @@
+void setup()
+{
+  Serial.begin( 9600 );
+
+  char numStr[] = "100";
+  uint8_t num = atoi( numStr );
+  
+  for ( int8_t i = 7; i >= 0; i-- )
+  {
+    Serial.println( (bool)(num & (1 << i)) );
+  }
+}

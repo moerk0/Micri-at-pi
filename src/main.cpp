@@ -1,22 +1,51 @@
 #include <Arduino.h>
-
 #include "gloabls.h"
 #include "config.h"
 #include "msg.h"
 #include "lights.h"
-#include "timer.h"
+#include "helper.h"
 #include "RGBLed.h"
 
 
-#define FACTOR 10
+
 
 struct Lights lights[node_cnt];
 struct Msg msg;
 
+
+void binaryConverter(struct Msg *p, int inputNum){
+  int maxInp =  pow(node_cnt,2)-1;
+  
+  if (inputNum > maxInp)
+  {
+    inputNum = maxInp;
+    Serial.println("Input too high max num exceeded");
+  }
+  else{;}//continue
+
+  for (int i = (node_cnt-1); i >= 0 ; i--)
+  {
+    p->binStr += (bool)(inputNum & (1 << i));
+  }
+    Serial.println(p->binStr);
+}
+
+void binaryBlinker(struct Msg *q,  struct Lights *p, byte which){
+    if (q->binStr[which] == '1')
+    {
+        p->state = HIGH;
+        digitalWrite(p->pin,p->state);
+    }
+
+    else{
+        p->state = LOW;
+        digitalWrite(p->pin,p->state);
+    }
+}
+
+
+
 //TODO: Configure On AND off Time
-
-
-
 //TODO: Make Default on and Default off a param, Move To Lights.cpp
 //Chase could be a simple counter, so it would not be dependend on 
 void chase(byte mode){
@@ -62,11 +91,20 @@ void setup(){
 
 
 void loop(){
-  parseData(&msg);
-  //processMonitorOptions(parseData(&msg));  
-  
-  chase(clockwise);
- 
+  // parseData(&msg);
+
+
+  // chase(clockwise);
+  if (pause_msg(50))
+  {
+   binaryConverter(&msg, random(0,15));
+   for (int i = 0; i < node_cnt; i++)
+   {
+   binaryBlinker(&msg, &lights[i], i);
+   }
+   msg.binStr = "";
+    Serial.println("________END_____________________");
+  }
   
 }
   
