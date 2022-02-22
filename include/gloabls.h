@@ -2,6 +2,16 @@
 #define GLOBALS_H
 #include "config.h"
 
+//SEQ_LEN = seqN, not seq_total_cnt
+enum Sequence{
+    seq0,
+    seq1,
+    seq2,
+    seq3,
+    repititions,
+    time,
+    seq_total_cnt,
+};
 enum Leds{
     node1,
     node2,
@@ -30,9 +40,9 @@ struct Lights{
 };
 
 struct Msg{
-    // char binStr[node_cnt]; //Wär schön is aber nicht
+    // char binStr[node_cnt*SEQ_LEN]; //Wär schön is aber nicht, sollte sein:[node_cnt*SEQ_LEN]
     String binStr;//Is it in Heap or stack?
-    unsigned int converted[SEQ_LEN];
+    unsigned int converted[seq_total_cnt]; 
     bool gate;
 };
 #endif

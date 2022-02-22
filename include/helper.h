@@ -1,8 +1,8 @@
 #ifndef HELPER_H
 #define HELPER_H
 
-bool pause_led(struct Lights *p);
-bool pause_msg(unsigned int interval);
+bool pause_arythmic(struct Lights *p);
+bool pause_rythmic(unsigned int interval);
 
 
 #endif

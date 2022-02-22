@@ -14,3 +14,15 @@ void ioLed(struct Lights *p){
     digitalWrite(p->pin, p->state);
 }
 
+//not hard coded, reads from a string saved in msg.
+void binaryBlinker(struct Msg *q,  struct Lights *p, byte which){
+    if (q->binStr[which] == '1'){
+        p->state = HIGH;
+    }
+
+    else{
+        p->state = LOW;
+    }
+    
+    digitalWrite(p->pin,p->state);
+}

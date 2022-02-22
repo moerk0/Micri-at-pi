@@ -1,21 +1,27 @@
 #include <Arduino.h>
 #include "gloabls.h"
 
-void parseData(struct Msg *p){
+bool parseData(struct Msg *p){
+  bool ret = false;
   while(Serial.available() > 0){
-    for (int i = 0; i < node_cnt; i++)
+    for (int i = 0; i < seq_total_cnt; i++)
     {
       p->converted[i] = Serial.parseInt();
     }
 
     if (Serial.read()== '\r'){
-      for (int i = 0; i < node_cnt; i++)
+      Serial.println("parsed: ");
+      for (int i = 0; i < seq_total_cnt; i++)
       {
-      Serial.println(p->converted[i]);
+      Serial.print(p->converted[i]);
+      Serial.print(", ");
       }
+      Serial.println('\n');
+      ret = true;
       break;
     }
   }
+  return ret;
 }
 
 

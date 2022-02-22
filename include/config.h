@@ -8,6 +8,6 @@
 #define LED_3   12
 
 #define FACTOR  10
-#define SEQ_LEN 4   //Ciycle Steps of one MathChaseSeq (NumSteps -1)
+#define SEQ_LEN 4   //Sequence parsed via ParseData()
 
 #endif
