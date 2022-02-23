@@ -3,6 +3,6 @@
 
 void makeLeds(struct Lights *p, int which_led);
 void ioLed(struct Lights *p);
-void binaryBlinker(struct Msg *q,  struct Lights *p, byte which);
+void binaryBlinker(struct Msg *q,  struct Lights *p, byte whichChar);
 
 #endif

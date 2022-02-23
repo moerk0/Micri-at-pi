@@ -37,8 +37,26 @@ void binaryConverter(struct Msg *p, int inputNum){
 
   for (int i = (node_cnt-1); i >= 0 ; i--)
   {
-    p->binStr += (bool)(inputNum & (1 << i));
+//    p->binStr += (bool)(inputNum & (1 << i));
   }
     Serial.println(p->binStr);
 }
 
+//this would be nicer if it would not need an inp, but then if have to iterate very much in taht func.
+void binCalc(int inp, struct Msg *p){
+  int i;
+  for ( i = 0; i < node_cnt; i++)
+  {
+    if (inp%2 == 0){p->binStr[i] = '0';}
+    else{p->binStr[i]='1';}
+    
+    inp /=2;
+  }
+  Serial.print("Result:\t");
+  for (int j = i-1; j >=0;j--){
+    Serial.print(p->binStr[j]);
+  }
+   Serial.print('\n');
+  
+  
+}

@@ -15,8 +15,8 @@ void ioLed(struct Lights *p){
 }
 
 //not hard coded, reads from a string saved in msg.
-void binaryBlinker(struct Msg *q,  struct Lights *p, byte which){
-    if (q->binStr[which] == '1'){
+void binaryBlinker(struct Msg *q,  struct Lights *p, byte whichChar){
+    if (q->binStr[whichChar] == '1'){
         p->state = HIGH;
     }
 
@@ -24,5 +24,6 @@ void binaryBlinker(struct Msg *q,  struct Lights *p, byte which){
         p->state = LOW;
     }
     
-    digitalWrite(p->pin,p->state);
+    Serial.print(p->state);
+    //digitalWrite(p->pin,p->state);
 }

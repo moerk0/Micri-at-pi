@@ -39,9 +39,10 @@ struct Lights{
     unsigned int delayT;
 };
 
+//Maybe Msg is in reality the SequenceHandle struct???? Hmmmm
 struct Msg{
-    // char binStr[node_cnt*SEQ_LEN]; //Wär schön is aber nicht, sollte sein:[node_cnt*SEQ_LEN]
-    String binStr;//Is it in Heap or stack?
+    char binStr[node_cnt]; //Wär schön is aber nicht, sollte sein:[node_cnt*SEQ_LEN]
+    //String binStr;//Is it in Heap or stack?
     unsigned int converted[seq_total_cnt]; 
     bool gate;
 };

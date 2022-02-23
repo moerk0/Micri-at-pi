@@ -42,21 +42,29 @@ void binaryBlink(int inp){
 }
 
 void binarySequencer(){
-  if (parseData(&msg)){
-      int idx = 0;
+  if (parseData(&msg))
+  {
+    int i = 0;
+    while (msg.converted[repititions] != 0)
+    {
+      if (pause_rythmic(msg.converted[time]))
+      {
+        binCalc(msg.converted[i],&msg);
 
-    while (msg.converted[repititions] != 0){
-      if (pause_rythmic(msg.converted[time])){
-        binaryBlink(msg.converted[idx]);
-        idx ++;
-        idx %= SEQ_LEN;
-          
+        Serial.print("LEd States:\t");
+        for (int j = 0; j < node_cnt; j++){
+          binaryBlinker(&msg,&lights[j],j);
+        }
+        Serial.print('\n');
+        i++;
         msg.converted[repititions]--;
+        i%= SEQ_LEN;
       }
-    } 
-    off();
+    }
   }
-} 
+  off();
+}
+ 
 
 
 
@@ -107,7 +115,8 @@ void setup(){
 
 
 void loop(){
-  binarySequencer();
+
+
   
 }
   
