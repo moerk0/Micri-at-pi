@@ -25,5 +25,5 @@ void binaryBlinker(struct Msg *q,  struct Lights *p, byte whichChar){
     }
     
     Serial.print(p->state);
-    //digitalWrite(p->pin,p->state);
+    digitalWrite(p->pin,p->state);
 }

@@ -116,7 +116,7 @@ void setup(){
 
 void loop(){
 
-
+binarySequencer();
   
 }
   
