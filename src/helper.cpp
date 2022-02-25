@@ -3,9 +3,9 @@
 
 bool pause_arythmic(struct Lights *p){
   //static unsigned long previousMillis;
-  if (millis() - p->lastOnTime >= p->delayT)
+  if (millis() - p->lastSwitchTime >= p->delayT)
   {
-    p->lastOnTime = millis();
+    p->lastSwitchTime = millis();
     return true;
   }
   return false;

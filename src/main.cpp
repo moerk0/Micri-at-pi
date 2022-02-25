@@ -5,6 +5,14 @@
 #include "lights.h"
 #include "helper.h"
 #include "RGBLed.h"
+#include "blinker.h"
+
+Blinker blinkers[node_cnt]= {
+  Blinker(LED_0, 1000),
+  Blinker(LED_1, 1000),
+  Blinker(LED_2, 1000),
+  Blinker(LED_3, 1000)
+  };
 
 struct Lights lights[node_cnt];
 struct Msg msg;
@@ -74,41 +82,36 @@ void binarySequencer(){
 //Chase could be a simple counter, so it would not be dependend on the adress of light.
 void chase(byte mode){
   static unsigned int idx;
-  if (pause_arythmic(&lights[idx]))
-{
-    ioLed(&lights[idx]);
-
-    if (!lights[idx].state){ //default off 
-      switch (mode)
-      {
-      case anticlockwise:
-        idx--;
-        break;
-      
-      case clockwise:
-      idx ++; 
-        break;
-      }
-
-    idx %= node_cnt;    
-    }
+  for (int i = 0; i < node_cnt; i++)
+  {
+    blinkers[i].run();
+  }
+  
 }
 
 
-}
+
+
 
 void setup(){
   Serial.begin(9600);
   
   int tmp[] = {LED_0, LED_1, LED_2,LED_3}; // Add LEDs here
-  int tmp_delayT[] = {25,50,75,100};  //Adjust delay Time here. Could also be in a typedef section
-  for (int i = 0; i < node_cnt; i++)
+  int tmp_delayI[] = {25,50,75,100};  //Adjust delay Time here. Could also be in a typedef section
+  int tmp_delayO[3];   //Adjust delay Time here. Could also be in a typedef section
+  
+  int idx = 3;
+  for (int i = 0; i < 3; i++)
   {
-    makeLeds(&lights[i], tmp[i]);
-    tmp_delayT[i]*= FACTOR;
-    lights[i].delayT = tmp_delayT[i]; 
+    tmp_delayO[i] = tmp_delayI[idx--];
   }
-   
+
+  Serial.println(tmp_delayO[3]);
+  
+  for (int i = 0; i < node_cnt; i++){
+    blinkers[i].setPin(tmp[i]);
+    blinkers[i].setDelayTime(tmp_delayI[i],tmp_delayO[i]);
+  }
 }
 
 
@@ -116,7 +119,7 @@ void setup(){
 
 void loop(){
 
-binarySequencer();
+chase(clockwise);
   
 }
   
@@ -130,7 +133,27 @@ binarySequencer();
   //  msg.binStr = "";
 
     
-    
+// void chase(byte mode){
+//   static unsigned int idx;
+//   if (pause_arythmic(&lights[idx]))
+// {
+//     ioLed(&lights[idx]);
+
+//     if (!lights[idx].state){ //default off 
+//       switch (mode)
+//       {
+//       case anticlockwise:
+//         idx--;
+//         break;
+      
+//       case clockwise:
+//       idx ++; 
+//         break;
+//       }
+
+//     idx %= node_cnt;    
+//     }
+// }    
 
     
   

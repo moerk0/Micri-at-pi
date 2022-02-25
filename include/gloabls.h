@@ -35,7 +35,7 @@ struct Lights{
     int pin;
     bool state;
     int dim_val;
-    unsigned long lastOnTime;
+    unsigned long lastSwitchTime;
     unsigned int delayT;
 };
 
