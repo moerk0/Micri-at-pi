@@ -1,81 +1,159 @@
 #include <Arduino.h>
-
 #include "gloabls.h"
 #include "config.h"
 #include "msg.h"
 #include "lights.h"
-#include "timer.h"
+#include "helper.h"
 #include "RGBLed.h"
+#include "blinker.h"
 
-
-#define FACTOR 10
+Blinker blinkers[node_cnt]= {
+  Blinker(LED_0, 1000),
+  Blinker(LED_1, 1000),
+  Blinker(LED_2, 1000),
+  Blinker(LED_3, 1000)
+  };
 
 struct Lights lights[node_cnt];
+struct Msg msg;
 
-//TODO: Configure On and off Time
-
-
-
-void ioLed(struct Lights *p){
-  p->state = !p->state;
-  digitalWrite(p->pin, p->state);
+//Easy way to turn off All leds
+void off(){
+  for (int i = 0; i < node_cnt; i++)
+  {
+    digitalWrite(lights[i].pin,LOW);
+  }
 }
+
+//hard coded, does not need external storage, performs the calc on the fly.
+void binaryBlink(int inp){
+    int i;
+
+    for ( i = 0; i < node_cnt; i++)
+    {
+     if (inp % 2 == 0)
+     {
+       lights[i].state = LOW;
+     }
+     else{lights[i].state = HIGH;}
+
+      digitalWrite(lights[i].pin, lights[i].state);
+      inp /= 2;
+    }
+    
+    Serial.print("Overall: ");      
+    for (int j = i-1;  j >=0; j--)
+    {
+        Serial.print(lights[j].state);
+    }  
+    Serial.print('\n'); 
+}
+
+void binarySequencer(){
+  if (parseData(&msg))
+  {
+    int i = 0;
+    while (msg.converted[repititions] != 0)
+    {
+      if (pause_rythmic(msg.converted[time]))
+      {
+        binCalc(msg.converted[i],&msg);
+
+        Serial.print("LEd States:\t");
+        for (int j = 0; j < node_cnt; j++){
+          binaryBlinker(&msg,&lights[j],j);
+        }
+        Serial.print('\n');
+        i++;
+        msg.converted[repititions]--;
+        i%= SEQ_LEN;
+      }
+    }
+  }
+  off();
+}
+ 
+
+
+
+
+//TODO: Configure On AND off Time
 //TODO: Make Default on and Default off a param
+//Chase could be a simple counter, so it would not be dependend on the adress of light.
 void chase(byte mode){
   static unsigned int idx;
-  if (pause_led(&lights[idx], 0))
-{
-    ioLed(&lights[idx]);
-    if (!lights[idx].state){
-      switch (mode)
-      {
-      case anticlockwise:
-        idx--;
-        break;
-      
-      case clockwise:
-      idx ++; 
-        break;
-      }
-
-    idx %= node_cnt;    
-    }
+  for (int i = 0; i < node_cnt; i++)
+  {
+    blinkers[i].run();
+  }
+  
 }
 
 
-}
+
+
 
 void setup(){
   Serial.begin(9600);
   
-  int tmp[] = {LED_0, LED_1, LED_2,LED_3};
-  int tmp_delayT[] = {25,50,75,100};
-  for (int i = 0; i < node_cnt; i++)
+  int tmp[] = {LED_0, LED_1, LED_2,LED_3}; // Add LEDs here
+  int tmp_delayI[] = {25,50,75,100};  //Adjust delay Time here. Could also be in a typedef section
+  int tmp_delayO[3];   //Adjust delay Time here. Could also be in a typedef section
+  
+  int idx = 3;
+  for (int i = 0; i < 3; i++)
   {
-  makeLeds(&lights[i], tmp[i]);
-  tmp_delayT[i]*= FACTOR;
-  lights[i].delayT = tmp_delayT[i]; //individual Delay Time
+    tmp_delayO[i] = tmp_delayI[idx--];
   }
-   
+
+  Serial.println(tmp_delayO[3]);
+  
+  for (int i = 0; i < node_cnt; i++){
+    blinkers[i].setPin(tmp[i]);
+    blinkers[i].setDelayTime(tmp_delayI[i],tmp_delayO[i]);
+  }
 }
 
 
 
 
 void loop(){
-  chase(clockwise);
-  if (pause_msg(1000)){
-  serialBehaviour();
-  }
+
+chase(clockwise);
   
 }
   
 
-
-  
+//  Serial.println("________END_____________________");
+  //  binaryConverter(&msg, random(0,15));
+  //  for (int i = 0; i < node_cnt; i++)
+  //  {
+  //  binaryBlinker(&msg, &lights[i], i);
+  //  }
+  //  msg.binStr = "";
 
     
-    
+// void chase(byte mode){
+//   static unsigned int idx;
+//   if (pause_arythmic(&lights[idx]))
+// {
+//     ioLed(&lights[idx]);
+
+//     if (!lights[idx].state){ //default off 
+//       switch (mode)
+//       {
+//       case anticlockwise:
+//         idx--;
+//         break;
+      
+//       case clockwise:
+//       idx ++; 
+//         break;
+//       }
+
+//     idx %= node_cnt;    
+//     }
+// }    
 
     
   

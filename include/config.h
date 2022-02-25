@@ -7,5 +7,7 @@
 #define LED_2   5
 #define LED_3   12
 
+#define FACTOR  10
+#define SEQ_LEN 4   //Sequence parsed via ParseData(), Mind you have to change Enum Seq as well.
 
 #endif

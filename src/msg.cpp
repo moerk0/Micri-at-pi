@@ -1,32 +1,28 @@
 #include <Arduino.h>
-
 #include "gloabls.h"
 
-void serialBehaviour(){
-  String msg = "";
-  while (Serial.available() > 0){
-    char inChar = Serial.read();  
-    if (inChar == '\r'){
-        int lenght = msg.length();
-        Serial.print(lenght);
-        Serial.println(msg);
+bool parseData(struct Msg *p){
+  bool ret = false;
+  while(Serial.available() > 0){
+    for (int i = 0; i < seq_total_cnt; i++)
+    {
+      p->converted[i] = Serial.parseInt();
     }
-    else{
-    msg+= (char)inChar;
-    //delay(3);
+
+    if (Serial.read()== '\r'){
+      Serial.println("parsed: ");
+      for (int i = 0; i < seq_total_cnt; i++)
+      {
+      Serial.print(p->converted[i]);
+      Serial.print(", ");
+      }
+      Serial.println('\n');
+      ret = true;
+      break;
     }
   }
-}
- String collectBits(struct Lights *p){
-  String msg;
-  while(msg.length() <= node_cnt){
-  msg+= p->state;
-  delay(3);
- }
-  return msg;
+  return ret;
 }
 
-bool dumpBits(String in_msg){
-  int cnt;
-    
-}
+
+

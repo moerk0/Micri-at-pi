@@ -9,14 +9,21 @@ void makeLeds(struct Lights *p, int which_led){
     pinMode(p->pin, OUTPUT);
 }
 
-void setLED(struct Lights *p){
+void ioLed(struct Lights *p){
     p->state =! p->state;
     digitalWrite(p->pin, p->state);
 }
 
-void sqLED(struct Lights *p, int t)
-{
-p->delayT = t;
+//not hard coded, reads from a string saved in msg.
+void binaryBlinker(struct Msg *q,  struct Lights *p, byte whichChar){
+    if (q->binStr[whichChar] == '1'){
+        p->state = HIGH;
+    }
 
-
-};
+    else{
+        p->state = LOW;
+    }
+    
+    Serial.print(p->state);
+    digitalWrite(p->pin,p->state);
+}

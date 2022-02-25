@@ -1,0 +1,15 @@
+// void processMonitorOptions(byte state){
+//   switch (state)
+//   {
+//   case help:
+//     // showOptions(&msg)
+//     break;
+//   case convert:
+//     convertSerialData(&msg);
+//     break;
+//   case error:
+//     // Nonono
+//   default:
+//     break;
+//   }
+// }
