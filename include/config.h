@@ -1,13 +1,12 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-
-#define LED_0   11
-#define LED_1   4
-#define LED_2   5
+#define LED_0   9
+#define LED_1   10
+#define LED_2   11
 #define LED_3   12
 
 #define FACTOR  10
-#define SEQ_LEN 4   //Sequence parsed via ParseData(), Mind you have to change Enum Seq as well.
+#define SEQ_LEN 15   //Sequence parsed via ParseData(), Mind you have to change Enum Seq as well.
 
 #endif

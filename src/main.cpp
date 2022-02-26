@@ -8,10 +8,10 @@
 #include "blinker.h"
 
 Blinker blinkers[node_cnt]= {
-  Blinker(LED_0, 1000),
-  Blinker(LED_1, 1000),
-  Blinker(LED_2, 1000),
-  Blinker(LED_3, 1000)
+  Blinker(LED_0, 20000),
+  Blinker(LED_1, 2000),
+  Blinker(LED_2, 200),
+  Blinker(LED_3, 20)
   };
 
 struct Lights lights[node_cnt];
@@ -26,28 +26,7 @@ void off(){
 }
 
 //hard coded, does not need external storage, performs the calc on the fly.
-void binaryBlink(int inp){
-    int i;
 
-    for ( i = 0; i < node_cnt; i++)
-    {
-     if (inp % 2 == 0)
-     {
-       lights[i].state = LOW;
-     }
-     else{lights[i].state = HIGH;}
-
-      digitalWrite(lights[i].pin, lights[i].state);
-      inp /= 2;
-    }
-    
-    Serial.print("Overall: ");      
-    for (int j = i-1;  j >=0; j--)
-    {
-        Serial.print(lights[j].state);
-    }  
-    Serial.print('\n'); 
-}
 
 void binarySequencer(){
   if (parseData(&msg))
@@ -99,18 +78,18 @@ void setup(){
   int tmp[] = {LED_0, LED_1, LED_2,LED_3}; // Add LEDs here
   int tmp_delayI[] = {25,50,75,100};  //Adjust delay Time here. Could also be in a typedef section
   int tmp_delayO[3];   //Adjust delay Time here. Could also be in a typedef section
-  
-  int idx = 3;
-  for (int i = 0; i < 3; i++)
-  {
-    tmp_delayO[i] = tmp_delayI[idx--];
-  }
+  // int idx = 3;
+  // for (int i = 0; i < 3; i++)
+  // {
+  //   tmp_delayO[i] = tmp_delayI[idx--];
+  // }
 
-  Serial.println(tmp_delayO[3]);
+  // Serial.println(tmp_delayO[3]);
   
   for (int i = 0; i < node_cnt; i++){
-    blinkers[i].setPin(tmp[i]);
-    blinkers[i].setDelayTime(tmp_delayI[i],tmp_delayO[i]);
+    makeLeds(&lights[i],tmp[i]);
+  //   blinkers[i].setPin(tmp[i]);
+  //   blinkers[i].setDelayTime(tmp_delayI[i],tmp_delayO[i]);
   }
 }
 
@@ -119,8 +98,9 @@ void setup(){
 
 void loop(){
 
-chase(clockwise);
-  
+// off();
+// binarySequencer();  
+chase(anticlockwise);
 }
   
 
