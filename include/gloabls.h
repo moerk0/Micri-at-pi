@@ -1,6 +1,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 #include "config.h"
+#include <Arduino.h>
 
 //SEQ_LEN = seqN, not seq_total_cnt
 enum Sequence{
@@ -57,4 +58,7 @@ struct Msg{
     unsigned int converted[seq_total_cnt]; 
     bool gate;
 };
+
+
+void debugMsg(String msg, int val);
 #endif

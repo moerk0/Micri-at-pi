@@ -3,15 +3,27 @@
 
 #include <Arduino.h>
 
-// struct Lights{
-//     int dim_val;
-// };
+//unused
+class TaskHandler
+{
+private:
+    bool token;
+
+    void takeToken();
+    void returnToken();
+public:
+    TaskHandler();
+    void performHandshake();
+};
+
+
+
 
 class Blinker
 {
 private:
     int pin;
-    unsigned int delayOn, delayOff;
+    uint16_t delayOn, delayOff;
     bool state;
     unsigned long lastSwitchTime = 0;
 
@@ -19,9 +31,11 @@ private:
 
 
 public:
-    Blinker(int pin, int interval);
+    bool prevState;
+
+    Blinker(int pin, uint16_t interval);
     bool run(void);
-    void turnOff(void);
+    void setLED(bool state);
     void setDelayTime(int i, int o);
     void setPin(int p);
     // void chase();

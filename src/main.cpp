@@ -8,24 +8,27 @@
 #include "blinker.h"
 
 Blinker blinkers[node_cnt]= {
-  Blinker(LED_0, 20000),
-  Blinker(LED_1, 2000),
-  Blinker(LED_2, 200),
-  Blinker(LED_3, 20)
+  Blinker(LED_0, 50),
+  Blinker(LED_1, 500),
+  Blinker(LED_2, 5000),
+  Blinker(LED_3, 50000)
   };
 
 struct Lights lights[node_cnt];
 struct Msg msg;
 
+void debugMsg(String msg, int val){
+    Serial.println(msg + String(val));
+}
+
 //Easy way to turn off All leds
 void off(){
   for (int i = 0; i < node_cnt; i++)
   {
-    digitalWrite(lights[i].pin,LOW);
+    blinkers[i].setLED(false);
   }
 }
 
-//hard coded, does not need external storage, performs the calc on the fly.
 
 
 void binarySequencer(){
@@ -49,21 +52,21 @@ void binarySequencer(){
       }
     }
   }
-  off();
+  // off();
 }
  
 
 
 
 
-//TODO: Configure On AND off Time
 //TODO: Make Default on and Default off a param
 //Chase could be a simple counter, so it would not be dependend on the adress of light.
 void chase(byte mode){
-  static unsigned int idx;
-  for (int i = 0; i < node_cnt; i++)
+  static unsigned int idx = 0;
+  if(blinkers[idx].run() && !blinkers[idx].prevState)
   {
-    blinkers[i].run();
+    idx++;
+    idx%= node_cnt;
   }
   
 }
@@ -76,8 +79,8 @@ void setup(){
   Serial.begin(9600);
   
   int tmp[] = {LED_0, LED_1, LED_2,LED_3}; // Add LEDs here
-  int tmp_delayI[] = {25,50,75,100};  //Adjust delay Time here. Could also be in a typedef section
-  int tmp_delayO[3];   //Adjust delay Time here. Could also be in a typedef section
+  // int tmp_delayI[] = {25,50,75,100};  //Adjust delay Time here. Could also be in a typedef section
+  // int tmp_delayO[3];   //Adjust delay Time here. Could also be in a typedef section
   // int idx = 3;
   // for (int i = 0; i < 3; i++)
   // {
@@ -87,8 +90,7 @@ void setup(){
   // Serial.println(tmp_delayO[3]);
   
   for (int i = 0; i < node_cnt; i++){
-    makeLeds(&lights[i],tmp[i]);
-  //   blinkers[i].setPin(tmp[i]);
+    blinkers[i].setPin(tmp[i]);
   //   blinkers[i].setDelayTime(tmp_delayI[i],tmp_delayO[i]);
   }
 }
@@ -97,12 +99,9 @@ void setup(){
 
 
 void loop(){
+chase(clockwise);
 
-// off();
-// binarySequencer();  
-chase(anticlockwise);
 }
-  
 
 //  Serial.println("________END_____________________");
   //  binaryConverter(&msg, random(0,15));
