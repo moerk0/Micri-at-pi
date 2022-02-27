@@ -35,6 +35,7 @@ enum Leds{
 enum ChaseMode{
     anticlockwise,
     clockwise,
+    mode_cnt,
 };
 
 enum SerialMonitorOptions{
@@ -48,7 +49,7 @@ struct Lights{
     bool state;
     int dim_val;
     unsigned long lastSwitchTime;
-    unsigned int delayT;
+    unsigned int delayT = 200;
 };
 
 //Maybe Msg is in reality the SequenceHandle struct???? Hmmmm

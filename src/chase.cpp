@@ -1,41 +1,62 @@
  
- #include "chase.h"
- #include <Arduino.h>
-
+#include "chase.h"
+#include <Arduino.h>
+#include "gloabls.h"
  
- ChaseLEDs::ChaseLEDs(const uint8_t *pins, int num, unsigned long advanceTime)
-     : _pins(pins)
-     , _numPins(num)
-     , _currentIndex(-1)
-     , _advanceTime(advanceTime)
-     , _lastChange(millis())
- {
-     for (uint8_t index = 0; index < _numPins; ++index) {
-         pinMode(_pins[index], OUTPUT);
-         digitalWrite(_pins[index], LOW);
-     }
+ChaseLEDs::ChaseLEDs(const uint8_t *pins, int num, unsigned long advanceTime)
+   : _pins(pins)
+   , _numPins(num)
+   , _currentIndex(0)
+   , _advanceTime(advanceTime)
+   , _lastChange(0)
+   , state(LOW)
+{
+   for (uint8_t index = 0; index < _numPins; ++index) {
+       pinMode(_pins[index], OUTPUT);
+       digitalWrite(_pins[index], LOW);
+   }
+}
+
+void ChaseLEDs::loop(byte mode){
+
+
+    if ((millis() - _lastChange) >= _advanceTime) {
+        switch (mode){
+            case clockwise:
+                advance(previousPin(snake), _pins[_currentIndex], mode);
+                _currentIndex++ ;
+                _currentIndex %= _numPins;
+            break;
+
+            case anticlockwise:
+                advance(previousPin(snake), _pins[_currentIndex], mode);
+                if(_currentIndex == 0)
+                    _currentIndex = _numPins - 1;
+                else
+                _currentIndex--;
+            break;
+        }
+
+                debugMsg("2.current:\t", _currentIndex);
+        _lastChange = millis();
+    }
+}
+
+void ChaseLEDs::advance(uint8_t prevPin, uint8_t nextPin, byte mode){
+    if (mode == clockwise || mode == anticlockwise){
+    state = ! state;
+     digitalWrite(nextPin, state);
+    state = ! state;
+     digitalWrite(prevPin, state);
+    }
  }
  
- void ChaseLEDs::loop()
- {
-     if (_currentIndex >= 0) {
-         if ((millis() - _lastChange) >= _advanceTime) {
-             // Advance to the next LED in sequence.
-             _currentIndex = (_currentIndex + 1) % _numPins;
-             _lastChange += _advanceTime;
-             advance(previousPin(1), _pins[_currentIndex]);
-         }
-     } else {
-         // First time - light the first LED.
-         _currentIndex = 0;
-         _lastChange = millis();
-           advance(previousPin(1), _pins[_currentIndex]);
-       }
-   }
-   
-   void ChaseLEDs::advance(uint8_t prevPin, uint8_t nextPin)
-   {
-       digitalWrite(prevPin, LOW);
-       digitalWrite(nextPin, HIGH);
-   }
-   
+
+ uint8_t ChaseLEDs::previousPin(int n){
+     
+    int result;
+    result =(_currentIndex + _numPins - n) % _numPins; 
+    (result == -1) ? result = _numPins - 1 : result = result;
+    return _pins[result];
+
+ }
