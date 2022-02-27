@@ -4,14 +4,15 @@
 #include "msg.h"
 #include "lights.h"
 #include "helper.h"
-#include "RGBLed.h"
 #include "blinker.h"
+#include "chase.h"
+
 
 Blinker blinkers[node_cnt]= {
   Blinker(LED_0, 50),
-  Blinker(LED_1, 500),
-  Blinker(LED_2, 5000),
-  Blinker(LED_3, 50000)
+  Blinker(LED_1, 50),
+  Blinker(LED_2, 50),
+  Blinker(LED_3, 50)
   };
 
 struct Lights lights[node_cnt];
@@ -63,8 +64,7 @@ void binarySequencer(){
 //Chase could be a simple counter, so it would not be dependend on the adress of light.
 void chase(byte mode){
   static unsigned int idx = 0;
-  if(blinkers[idx].run() && !blinkers[idx].prevState)
-  {
+  if(blinkers[idx].run() && !blinkers[idx].prevState){
     idx++;
     idx%= node_cnt;
   }
@@ -77,22 +77,6 @@ void chase(byte mode){
 
 void setup(){
   Serial.begin(9600);
-  
-  int tmp[] = {LED_0, LED_1, LED_2,LED_3}; // Add LEDs here
-  // int tmp_delayI[] = {25,50,75,100};  //Adjust delay Time here. Could also be in a typedef section
-  // int tmp_delayO[3];   //Adjust delay Time here. Could also be in a typedef section
-  // int idx = 3;
-  // for (int i = 0; i < 3; i++)
-  // {
-  //   tmp_delayO[i] = tmp_delayI[idx--];
-  // }
-
-  // Serial.println(tmp_delayO[3]);
-  
-  for (int i = 0; i < node_cnt; i++){
-    blinkers[i].setPin(tmp[i]);
-  //   blinkers[i].setDelayTime(tmp_delayI[i],tmp_delayO[i]);
-  }
 }
 
 

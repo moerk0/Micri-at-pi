@@ -8,13 +8,12 @@ void TaskHandler::returnToken(){this->token=false;}
 void TaskHandler::performHandshake(){(this->token) ? takeToken() : returnToken();}
 
 
-
-
-Blinker::Blinker(int p, uint16_t delay){
-    this->pin = p;
-    pinMode(this->pin, OUTPUT);
-    this->delayOn  = delay;
-    this->delayOff = delay;
+Blinker::Blinker(int p, uint16_t delay)
+:   pin(p)
+,   delayOn(delay)
+,   delayOff(delay)
+{
+    pinMode(pin, OUTPUT);   //      No this-> need, y is that so?
 }
 
 void Blinker::writeLed(){
@@ -40,8 +39,6 @@ bool Blinker::run(){
     this->lastSwitchTime = millis();
     this->state ^= 1;
     writeLed();
-    debugMsg("last Time:\t", this->lastSwitchTime);
-    debugMsg("delay Time:\t", i);
   }
 
   return this->state;
@@ -55,3 +52,6 @@ void Blinker::setPin(int p){
     this->pin = p;
     pinMode(this->pin, OUTPUT);
 }
+
+ 
+
