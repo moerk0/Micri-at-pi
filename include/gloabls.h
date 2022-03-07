@@ -49,6 +49,15 @@ struct Msg{
     bool gate;
 };
 
+struct LDR{
+    uint8_t pin;
+    uint8_t peakHI;
+    uint8_t peakLO;
+    uint8_t thresh;
+    uint8_t val;
+    uint8_t logic;
+};
+
 
 void debugMsg(String msg, int val);
 #endif

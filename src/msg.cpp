@@ -9,7 +9,7 @@ bool parseData(struct Msg *p){
       p->converted[i] = Serial.parseInt();
     }
 
-    if (Serial.read()== '\r'){
+    if (Serial.read() == '\r'){
       Serial.println("parsed: ");
       for (int i = 0; i < seq_total_cnt; i++)
       {
@@ -25,4 +25,12 @@ bool parseData(struct Msg *p){
 }
 
 
+bool msgRecieved(char Inchar){
+  bool ret = false;
+  if (Serial.read() == Inchar)
+    ret = true;
+  else
+    ret = false;
 
+  return ret;
+}

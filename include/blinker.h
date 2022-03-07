@@ -3,21 +3,6 @@
 
 #include <Arduino.h>
 
-//unused
-class TaskHandler
-{
-private:
-    bool token;
-
-    void takeToken();
-    void returnToken();
-public:
-    TaskHandler();
-    void performHandshake();
-};
-
-
-
 
 class Blinker
 {

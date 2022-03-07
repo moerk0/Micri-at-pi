@@ -2,10 +2,6 @@
 #include "blinker.h"
 #include "gloabls.h"
 
-//quo vadis Code?
-void TaskHandler::takeToken(){this->token=true;}
-void TaskHandler::returnToken(){this->token=false;}
-void TaskHandler::performHandshake(){(this->token) ? takeToken() : returnToken();}
 
 
 Blinker::Blinker(int p, uint16_t delay)

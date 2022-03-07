@@ -60,3 +60,5 @@ void binCalc(int inp, struct Msg *p){
   
   
 }
+
+
