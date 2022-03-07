@@ -37,7 +37,6 @@ void ChaseLEDs::loop(byte mode){
             break;
         }
 
-                debugMsg("2.current:\t", _currentIndex);
         _lastChange = millis();
     }
 }
@@ -57,6 +56,7 @@ void ChaseLEDs::advance(uint8_t prevPin, uint8_t nextPin, byte mode){
     int result;
     result =(_currentIndex + _numPins - n) % _numPins; 
     (result == -1) ? result = _numPins - 1 : result = result;
+    debugMsg("result:\t", result);
     return _pins[result];
 
  }

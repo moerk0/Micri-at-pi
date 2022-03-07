@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "gloabls.h"
 #include "config.h"
+#include "config_env.h"
 #include "msg.h"
 #include "lights.h"
 #include "helper.h"
@@ -15,6 +16,7 @@
 //   Blinker(LED_3, 50)
 //   };
 
+Blinker
  uint8_t pins[] = {LED_0,LED_1,LED_2,LED_3, LED_4,LED_5,LED_6};
 ChaseLEDs chaser(pins, sizeof(pins), 200);
 
@@ -101,7 +103,7 @@ void binarySequencer(){
 
 void setup(){
   Serial.begin(9600);
-  chaser.setSnake(1);
+  chaser.setSnake(5);
   // for (int i = 0; i < 8; i++)
   // {
   // makeLeds(&lights[i], pins[i]);
@@ -113,8 +115,15 @@ void setup(){
 
 
 void loop(){
-// chase(anticlockwise);
-chaser.loop(anticlockwise);
+int val;
+
+val = analogRead(A0);
+Serial.println(val);
+delay(500);
+
+// chaser.loop(anticlockwise);
+
+  // binarySequencer();
 }
 
   //  binaryConverter(&msg, random(0,15));
