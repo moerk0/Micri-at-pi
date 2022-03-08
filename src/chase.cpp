@@ -1,7 +1,9 @@
  
 #include "chase.h"
 #include <Arduino.h>
- 
+
+
+
 ChaseLEDs::ChaseLEDs(const uint8_t *pins, int num)
    : pins_(pins)
    , numPins_(num)
@@ -22,16 +24,15 @@ ChaseLEDs::ChaseLEDs(const uint8_t *pins, int num)
 void ChaseLEDs::sequencer(int afterglow, byte mode){
 
 
-    bitWrite( state, idx++, 1 );
-
-    kdx = ( idx - afterglow );
-    kdx %= numPins_;
-    
-    bitWrite( state, kdx, 0 );
-    
-    
-    idx %= numPins_;
-    
+   bitWrite( state, idx++, 1 );
+   
+   kdx = ( idx - afterglow );
+   kdx %= numPins_;
+   
+   bitWrite( state, kdx, 0 );
+   
+   
+   idx %= numPins_;
 
 
 }
@@ -77,7 +78,11 @@ void ChaseLEDs::chase(int afterglow, byte mode, uint16_t interval){
                //
                // 
 //this third   ø|ø     does the hadware
-
-   writeState();
-   
+   if (prevState != state){                //       Check if sate changed
+      
+      writeState();
+      
+      prevState = state;
+    
+   }
 }

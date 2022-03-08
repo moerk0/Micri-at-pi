@@ -13,25 +13,25 @@
  {
 
  private:
-    //hardware related vars
-     const uint8_t *pins_;
-     int numPins_;
+      //hardware related vars
+      const uint8_t *pins_;
+      int numPins_;
     
-    //counter related vars
-     unsigned int idx;
-     unsigned int kdx;          //    negative Index
+      //counter related vars
+      unsigned int idx;
+      unsigned int kdx;          //    negative Index
      
-     //time related vars
-     unsigned long prevMillis_;
-     
-     //state related vars
-     int state;
+      //time related vars
+      unsigned long prevMillis_;
+      
+      //state related vars
+      uint32_t state;
+      uint32_t prevState;
 
-
-    //private methods
-     void sequencer(int afterglow, byte mode); //       handle hits
-     uint8_t intervaler(uint16_t interval);   //        handle time
-     void writeState(void);                  //         handle lits
+      //private methods
+      void sequencer(int afterglow, byte mode); //       handle hits
+      uint8_t intervaler(uint16_t interval);   //        handle time
+      void writeState(void);                  //         handle lits
  
 
   public:
