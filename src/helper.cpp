@@ -62,3 +62,52 @@ void binCalc(int inp, struct Msg *p){
 }
 
 
+
+
+
+// void vers1(){
+//   for (i = 0; i < 8; i++)
+//   {
+//     a = 1<<i;
+//     visualize();
+//     delay(10);
+//   }
+// }
+
+// void vers2(int interval){
+   
+//   if (pause_rythmic(interval))
+//   {
+//     a = 1<<i;
+//     visualize();
+//     i++;
+//     i %= 8;
+//     }
+// }
+// void vers3(int interval){
+   
+//   if (pause_rythmic(interval))
+//   {
+//     i %= bit_len;
+//     bitWrite(a,i++,1);
+//     k = (i - afterglow);
+//     k %= bit_len;
+//     bitWrite(a,k,0);
+//     visualize();
+//     }
+// }
+
+
+// void loop(){
+
+// if (msgRecieved('\r')){
+//   s = !s; 
+//   i = 0;
+//   }
+
+//   if(s){
+//   vers3(150);
+// }
+
+
+

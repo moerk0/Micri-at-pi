@@ -60,4 +60,5 @@ struct LDR{
 
 
 void debugMsg(String msg, int val);
+void visual();
 #endif

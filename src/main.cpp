@@ -16,30 +16,31 @@
 //   Blinker(LED_3, 50)
 //   };
 
-Blinker blinker (DEBUG_PIN_7, 3000);
-Blinker blinker1(DEBUG_PIN_4, 2000);
-struct LDR ldr;
-struct Msg msg;
-
-
-
-//  uint8_t pins[] = {LED_0,LED_1,LED_2,LED_3, LED_4,LED_5,LED_6};
-// ChaseLEDs chaser(pins, sizeof(pins), 200);
-
+// Blinker blinker (DEBUG_PIN_7, 3000);
+// Blinker blinker1(DEBUG_PIN_4, 2000);
+// struct LDR ldr;
+// struct Msg msg;
 // struct Lights lights[node_cnt];
+
+
+
+ uint8_t pins[] = {DEBUG_PIN_0,
+                   DEBUG_PIN_1,
+                   DEBUG_PIN_2,
+                   DEBUG_PIN_3,
+                   DEBUG_PIN_4,
+                   DEBUG_PIN_5,
+                   DEBUG_PIN_6,
+                   DEBUG_PIN_7,
+ };
+ChaseLEDs chaser(pins, sizeof(pins));
+
 
 void debugMsg(String msg, int val){
     Serial.println(msg + ":\t" + String(val));
     // Serial.println("________END_____________________");
 }
 
-//Easy way to turn off All leds
-// void off(){
-//   for (int i = 0; i < node_cnt; i++)
-//   {
-//     blinkers[i].setLED(false);
-//   }
-// }
 
 
 
@@ -84,51 +85,14 @@ void debugMsg(String msg, int val){
 
 
 
-// void chase(byte mode){
-//   static unsigned int idx;
-//   if (pause_arythmic(&lights[idx])){
-//     ioLed(&lights[idx]);
 
-//     if (!lights[idx].state){ //default off 
-//       switch (mode)
-//       {
-//       case anticlockwise:
-//         idx--;
-//         break;
-      
-//       case clockwise:
-//       idx ++; 
-//         break;
-//       }
-
-//       idx %= node_cnt;    
-//     }
-//   }    
-// }
 
 void setup(){
   Serial.begin(9600);
-  ldr.pin = A0;
-  blinker.setDelayTime(500,800);
-  blinker.setDelayTime(800,500);
-  // chaser.setSnake(5);
-
-  // for (int i = 0; i < 8; i++)
-  // {
-  // makeLeds(&lights[i], pins[i]);
-  // }
-  
 }
 
+void visual(uint8_t a){
 
-uint8_t a = 0b00000000;
-uint8_t bit_len = 8;
-uint8_t afterglow = 3;
-uint8_t k = 0;
-uint8_t i = 0;
-uint8_t s = 0x00;
-
-void printStats(){
     Serial.print(a,BIN);
     Serial.print('\t');
     Serial.print(a,HEX);
@@ -138,81 +102,20 @@ void printStats(){
     Serial.print('\t');
     Serial.print('\t');
     Serial.print("i: ");
-    Serial.print(i);
-    Serial.print('\t');
-    Serial.print('\t');
-    Serial.print("k: ");
-    Serial.print(k);
-    Serial.print('\t');
-    Serial.print('\t');
-    Serial.print("l: ");
-    Serial.print(ldr.val);
+   // Serial.print(i);
+    // Serial.print('\t');
+    // Serial.print('\t');
+    // Serial.print("k: ");
+    // Serial.print(k);
+    // Serial.print('\t');
+    // Serial.print('\t');
+    // Serial.print("l: ");
+    // Serial.print(ldr.val);
     Serial.println();
 }
 
 
-void vers1(){
-  for (i = 0; i < 8; i++)
-  {
-    a = 1<<i;
-    printStats();
-    delay(10);
-  }
-}
-
-void vers2(int interval){
-   
-  if (pause_rythmic(interval))
-  {
-    a = 1<<i;
-    printStats();
-    i++;
-    i %= 8;
-    }
-}
-void vers3(int interval){
-   
-  if (pause_rythmic(interval))
-  {
-    bitWrite(a,i++,1);
-    k = (i - afterglow);
-    k %= bit_len;
-    bitWrite(a,k,0);
-    printStats();
-    i %= bit_len;
-    }
-}
-
-
 void loop(){
-
-if (msgRecieved('\r')){
-  s = !s; 
-  i = 0;
-  }
-
-  if(s){
-  vers3(150);
-  ldr.val = analogRead(ldr.pin);
-  for (int i = 0; i < bit_len; i++)
-  {
-  (a & (1<<i))? digitalWrite(DEBUG_PIN_7, HIGH) : digitalWrite(DEBUG_PIN_7, LOW);
-   }
-  
-
+  chaser.chase( 6, 0x00, 50 );
 }
 
-
-
-}
-
-// chaser.loop(anticlockwise);
-
-  // binarySequencer();
-
-  //  binaryConverter(&msg, random(0,15));
-  //  for (int i = 0; i < node_cnt; i++)
-  //  {
-  //  binaryBlinker(&msg, &lights[i], i);
-  //  }
-  //  msg.binStr = "";
