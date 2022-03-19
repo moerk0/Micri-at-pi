@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include <TM1637Display.h>
+
 #include "gloabls.h"
 #include "config.h"
 #include "config_env.h"
@@ -34,6 +36,8 @@
                    DEBUG_PIN_7,
  };
 ChaseLEDs chaser(pins, sizeof(pins));
+
+TM1637Display display(CLK, DIO);
 
 
 void debugMsg(String msg, int val){
@@ -89,6 +93,8 @@ void debugMsg(String msg, int val){
 
 void setup(){
   Serial.begin(9600);
+    display.setBrightness(0x0f);
+
 }
 
 void visual(uint8_t a){
@@ -114,8 +120,12 @@ void visual(uint8_t a){
     Serial.println();
 }
 
+  uint8_t data[] = { 0xff, 0xff, 0xff, 0xff };
+
 
 void loop(){
-  chaser.chase( 6, 0x00, 50 );
+  chaser.chase( 5, 0x00, 100 );
+  display.showNumberDec(chaser.getState(), true);
+  //  display.setSegments(data);
 }
 

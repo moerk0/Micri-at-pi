@@ -40,6 +40,8 @@
 
     void chase(int afterglow, byte mode, uint16_t intveral);
 
+    uint32_t getState(){return state;}
+
 
  
 END_OF_CHASE

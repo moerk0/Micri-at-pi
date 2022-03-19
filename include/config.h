@@ -9,7 +9,11 @@
 #define LED_5   11
 #define LED_6   12
 
-#define FACTOR  10
 #define SEQ_LEN 4   //Sequence parsed via ParseData(), Mind you have to change Enum Seq as well.
+
+//7 - Segemnts Pins
+
+#define CLK 2
+#define DIO 3
 
 #endif
