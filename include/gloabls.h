@@ -1,6 +1,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 #include "config.h"
+#include <Arduino.h>
 
 //SEQ_LEN = seqN, not seq_total_cnt
 enum Sequence{
@@ -23,6 +24,7 @@ enum Leds{
 enum ChaseMode{
     anticlockwise,
     clockwise,
+    mode_cnt,
 };
 
 enum SerialMonitorOptions{
@@ -36,7 +38,7 @@ struct Lights{
     bool state;
     int dim_val;
     unsigned long lastSwitchTime;
-    unsigned int delayT;
+    unsigned int delayT = 200;
 };
 
 //Maybe Msg is in reality the SequenceHandle struct???? Hmmmm
@@ -46,4 +48,17 @@ struct Msg{
     unsigned int converted[seq_total_cnt]; 
     bool gate;
 };
+
+struct LDR{
+    uint8_t pin;
+    uint8_t peakHI;
+    uint8_t peakLO;
+    uint8_t thresh;
+    uint8_t val;
+    uint8_t logic;
+};
+
+
+void debugMsg(String msg, int val);
+void visual();
 #endif
